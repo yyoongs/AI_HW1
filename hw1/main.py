@@ -44,8 +44,8 @@ def TestSN(input_i, x_train, y_train, x_test, y_test, W,
         # print("y_train : ", y_train.shape)
         # y_loss = SN.LossFunction(y_soft, y_train)
         # print("y_loss : ", y_loss.shape)
-        y_predict,loss = SN.Forward(x_train, y_train)
-        print(y_predict.shape, loss.shape)
+        y_predict, loss = SN.Forward(x_train, y_train)
+        # print(y_predict.shape, loss.shape)
         SN.BackPropagation(x_train, y_predict, y_train)
         print("이 이미지의 학습 전 이미지의 추론 값 : ", np.argmax(y_predict[i]))  # 추론값의 결과가 그림의 숫자와 같을 수도 다를 수도 있음.
         SN.Optimization(x_train, y_train, x_test, y_test)   #optimize 실행
@@ -77,7 +77,7 @@ W = np.random.random((784, 10))  # label의 갯수가 10개이고 이미지당 �
 Bias = np.random.random(10)  # Bias는 각 이미지 label당 하나씩의 값을 가지므로 10개의 값을 가지는 배열
 
 # i = input() # 자신이 원하는 숫자 넣기 가능
-i = 0
+i = 1
 print("train 데이터의 {} 번째의 값 추출".format(i))
 
 Trainend = TestSN(i, x_train, y_train, x_test, y_test, W, Bias)  # 위의 TestNN함수를 호출해 작업을 돌림.

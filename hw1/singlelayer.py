@@ -31,6 +31,7 @@ class singleLayer:
         expX = np.exp(temp)
         y_predict = expX / np.sum(expX)
         return y_predict  # 합이1, exp까지 계산됨
+    # y_predict의 shape = (60000,10)
 
     def LossFunction(self, y_predict, Y):  # Loss Function을 구하십시오 -> 직접 작성
         # 3.3
@@ -43,18 +44,20 @@ class singleLayer:
         # 3.4
         y_score = self.ScoreFunction(X)
         y_predict = self.Softmax(y_score)
-        print("y_predict : ", y_predict.shape)
         loss = self.LossFunction(y_predict, Y)
         return y_predict, loss
 
     def delta_Loss_Scorefunction(self, y_predict, Y):  # 제공.dL/dScoreFunction
         delta_Score = y_predict - Y
         return delta_Score
+    # y_predict의 shape = (60000,10)
     # delta_Score의 shape = (60000,10)
 
     def delta_Score_weight(self, delta_Score, X):  # 제공. dScoreFunction / dw .
         delta_W = np.dot(X.T, delta_Score) / X[0].shape
         # print(np.dot(X.T, delta_Score).shape)
+        # X의 shape = 60000,784
+
         # print(X[0].shape)
         return delta_W
     # delta_W의 shape = (784,10)
@@ -68,12 +71,7 @@ class singleLayer:
     def BackPropagation(self, X, y_predict, Y):
         # 3.5
         delta_score = self.delta_Loss_Scorefunction(y_predict, Y)
-        print("delta_score : ",delta_score.shape)
-        delta = self.delta_Score_bias(delta_score, X)
-        print("wwwwwwwwwwwwwww", delta.shape)
-        delta_W = np.dot(self.delta_Score_weight(delta_score, X), delta_score.T)
-        delta_W = delta_W.T
-        print("delta_w : ",delta_W.shape)
+        delta_W = np.dot(delta_score, self.delta_Score_weight(delta_score, X).T)
         delta_B = delta_score * self.delta_Score_bias(delta_score, X)
         # print("delta_b : ", delta_B)
         return delta_W, delta_B
@@ -96,7 +94,7 @@ class singleLayer:
             y_predict = forward_train[0]
             loss = forward_train[1]
 
-            backpropo = self.BackPropagation(X_train[i], y_predict, Y_train[i])
+            backpropo = self.BackPropagation(X_train, y_predict, Y_train)
             print(backpropo)
             # 함수 작성
             if i % 10 == 0:
