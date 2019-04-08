@@ -59,7 +59,6 @@ def TestSN(input_i, x_train, y_train, x_test, y_test, W,
 
 
 x_train, y_train, x_test, y_test = get_data()
-
 #
 # print(x_train.shape)
 #

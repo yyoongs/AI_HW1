@@ -22,8 +22,6 @@ class singleLayer:
     def Softmax(self, ScoreMatrix):  # 제공.
         if ScoreMatrix.ndim == 2:
             temp = ScoreMatrix.T
-            # print("TTTTTTTTTTTT", temp)
-            # print("kkkkkkkkkkkkkkkkk", np.max(temp, axis=0))
             temp = temp - np.max(temp, axis=0)
             y_predict = np.exp(temp) / np.sum(np.exp(temp), axis=0)
             return y_predict.T
@@ -50,20 +48,16 @@ class singleLayer:
     def delta_Loss_Scorefunction(self, y_predict, Y):  # 제공.dL/dScoreFunction
         delta_Score = y_predict - Y
         return delta_Score
-    # y_predict의 shape = (60000,10)
     # delta_Score의 shape = (60000,10)
 
     def delta_Score_weight(self, delta_Score, X):  # 제공. dScoreFunction / dw .
         delta_W = np.dot(X.T, delta_Score) / X[0].shape
-        # print(np.dot(X.T, delta_Score).shape)
-        # X의 shape = 60000,784
-
-        # print(X[0].shape)
         return delta_W
     # delta_W의 shape = (784,10)
 
     def delta_Score_bias(self, delta_Score, X):  # 제공. dScoreFunction / db .
         delta_B = np.sum(delta_Score) / X[0].shape
+        # print("!@#!@#!@#", delta_B)
         return delta_B
     # delta_B의 shape = (1)
 
@@ -71,9 +65,8 @@ class singleLayer:
     def BackPropagation(self, X, y_predict, Y):
         # 3.5
         delta_score = self.delta_Loss_Scorefunction(y_predict, Y)
-        delta_W = np.dot(delta_score, self.delta_Score_weight(delta_score, X).T)
-        delta_B = delta_score * self.delta_Score_bias(delta_score, X)
-        # print("delta_b : ", delta_B)
+        delta_W = self.delta_Score_weight(delta_score, X)
+        delta_B = self.delta_Score_bias(delta_score, X)
         return delta_W, delta_B
 
     # 정확도를 체크하는 Accuracy 제공
@@ -90,16 +83,15 @@ class singleLayer:
     def Optimization(self, X_train, Y_train, X_test, Y_test, learning_rate=0.01, epoch=100):
         for i in range(epoch):
             # 3.6
-            forward_train = self.Forward(X_train, Y_train)
-            y_predict = forward_train[0]
-            loss = forward_train[1]
-
-            backpropo = self.BackPropagation(X_train, y_predict, Y_train)
-            print(backpropo)
+            y_predict, loss = self.Forward(X_train, Y_train)
+            delta_W, delta_B = self.BackPropagation(X_train, y_predict, Y_train)
+            train_acc = self.Accuracy(X_train, Y_train)
+            test_acc = self.Accuracy(X_test,Y_test)
+            self.SetParams(self.W - delta_W * learning_rate, self.B - delta_B * learning_rate)
             # 함수 작성
             if i % 10 == 0:
                 # 3.6 Accuracy 함수 사용
                 print(i, "번째 트레이닝")
                 print('현재 Loss(Cost)의 값 : ', loss)
-                print("Train Set의 Accuracy의 값 : ", )
-                print("Test Set의 Accuracy의 값 :", )
+                print("Train Set의 Accuracy의 값 : ", train_acc)
+                print("Test Set의 Accuracy의 값 :", test_acc)
