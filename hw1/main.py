@@ -30,27 +30,19 @@ def is_number(s):
 def TestSN(input_i, x_train, y_train, x_test, y_test, W,
            Bias):  # test 이미지를 하나 뽑고 singleNN.py의 trainingAndResult를 돌려서 학습전 결과와 학습 후 결과가 어떻게 다른지 확인하는 것
     if is_number(input_i):
-        i = int(input_i)    # i에 input_i값을 넣음
-        Test = x_train[i]   # x_train의 i번째 이미지를 test에 넣음
-        label = np.argmax(y_train[i])   #y_train의 i번째 이미지의 최대값의 위치를 label에 넣음
-        # img_show(Test)  #이미지를 보여주는 함수
+        i = int(input_i)  # i에 input_i값을 넣음
+        Test = x_train[i]  # x_train의 i번째 이미지를 test에 넣음
+        label = np.argmax(y_train[i])  # y_train의 i번째 이미지의 최대값의 위치를 label에 넣음
         print("이 이미지의 실제 값 : ", label)  # 그림의 숫자와 동일
 
-        SN = sn.singleLayer(W, Bias)    #singlelayer.py에 있는 singlelayer class를 SN으로 설정
-        # y_predict = SN.ScoreFunction(x_train) #y_predict값은 SN의 scorefunction함수에 x_test[i]를 넣어서 나온값
-        # print("y_predict : ", y_predict)
-        # y_soft = SN.Softmax(y_predict)
-        # print("y_soft : ", y_soft.shape)
-        # print("y_train : ", y_train.shape)
-        # y_loss = SN.LossFunction(y_soft, y_train)
-        # print("y_loss : ", y_loss.shape)
-        y_predict, loss = SN.Forward(x_train, y_train)
-        # print(y_predict.shape, loss.shape)
-        SN.BackPropagation(x_train, y_predict, y_train)
+        SN = sn.singleLayer(W, Bias)  # singlelayer.py에 있는 singlelayer class를 SN으로 설정
+        y_predict, loss = SN.Forward(x_train, y_train)  # Forward 함수를 이용하여 y_predict와 loss값 계산
         print("이 이미지의 학습 전 이미지의 추론 값 : ", np.argmax(y_predict[i]))  # 추론값의 결과가 그림의 숫자와 같을 수도 다를 수도 있음.
-        SN.Optimization(x_train, y_train, x_test, y_test)   #optimize 실행
-        y_predict = SN.ScoreFunction(x_train[i])    #y_predict는 optimize실시 후의 scorefunction
+        SN.Optimization(x_train, y_train, x_test, y_test)  # optimize 실행
+        y_predict = SN.ScoreFunction(x_train[i])  # y_predict는 optimize실시 후의 scorefunction
         print("학습이 완료되었습니다 \n이미지의 학습 후 추론 값: ", np.argmax(y_predict))  # 트레이닝 후의 추론값 또한 결과값과 다를 수도 있다.(정확도가 87% 정도이기에)
+        img_show(Test)  # 이미지를 보여주는 함수
+        # 제가 돌릴 때 이 코드를 위쪽에 두고 돌리니까 이미지를 띄우느라 오류가 떠서 아래로 옮겼습니다.
         return SN
 
     else:
@@ -59,16 +51,6 @@ def TestSN(input_i, x_train, y_train, x_test, y_test, W,
 
 
 x_train, y_train, x_test, y_test = get_data()
-#
-# print(x_train.shape)
-#
-# print(y_train.shape)
-#
-# print(x_test.shape)
-#
-# print(y_test.shape)
-# 받아온 데이터 형상 출력 test
-
 
 # W값과 Bias 값을 np.random.random 함수를 사용해 알맞게 넣어주십시오.(이 것만 빈칸 나머지는 제공)
 # 3.1
@@ -82,21 +64,19 @@ print("train 데이터의 {} 번째의 값 추출".format(i))
 Trainend = TestSN(i, x_train, y_train, x_test, y_test, W, Bias)  # 위의 TestNN함수를 호출해 작업을 돌림.
 
 # 밑에 것은 심심하면 자신이 트레이닝한 것이 잘되는지 실험해보세요.
-'''
-if Trainend !=False:
-   TrainNN =Trainend
-   print("몇 번 추론하실 겁니까?")
-   iterator = input()
-   if(is_number(iterator)):
-      for i in range(0, int(iterator)):
-         print("x_train의 s번째 데이터를 뽑아주세요.\n")
-         s = int(input())
-         print("S : {}".format(s))
-         check = x_train[s]
-         img_show(check)
-         Hypothesis = TrainNN.Forward(check)
-         print("이 이미지의 추론 값 : {}".format(np.argmax(Hypothesis)))
-   else:
-      print("iterator로 숫자를 안넣었습니다. 종료합니다.")
-
-'''
+#
+# if Trainend !=False:
+#    TrainNN =Trainend
+#    print("몇 번 추론하실 겁니까?")
+#    iterator = input()
+#    if(is_number(iterator)):
+#       for i in range(0, int(iterator)):
+#          print("x_train의 s번째 데이터를 뽑아주세요.\n")
+#          s = int(input())
+#          print("S : {}".format(s))
+#          check = x_train[s]
+#          # img_show(check)
+#          Hypothesis = TrainNN.Forward(check)
+#          print("이 이미지의 추론 값 : {}".format(np.argmax(Hypothesis)))
+#    else:
+#       print("iterator로 숫자를 안넣었습니다. 종료합니다.")
