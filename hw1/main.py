@@ -57,8 +57,8 @@ x_train, y_train, x_test, y_test = get_data()
 W = np.random.random((784, 10))  # label의 갯수가 10개이고 이미지당 픽셀수가 784개 이므로 W는 784x10의 벡터값을 가진다
 Bias = np.random.random(10)  # Bias는 각 이미지 label당 하나씩의 값을 가지므로 10개의 값을 가지는 배열
 
-i = input() # 자신이 원하는 숫자 넣기 가능
-# i = 1
+# i = input() # 자신이 원하는 숫자 넣기 가능
+i = 5
 print("train 데이터의 {} 번째의 값 추출".format(i))
 
 Trainend = TestSN(i, x_train, y_train, x_test, y_test, W, Bias)  # 위의 TestNN함수를 호출해 작업을 돌림.
