@@ -33,6 +33,7 @@ def TestSN(input_i, x_train, y_train, x_test, y_test, W,
         i = int(input_i)  # i에 input_i값을 넣음
         Test = x_train[i]  # x_train의 i번째 이미지를 test에 넣음
         label = np.argmax(y_train[i])  # y_train의 i번째 이미지의 최대값의 위치를 label에 넣음
+        img_show(Test)  # 이미지를 보여주는 함수
         print("이 이미지의 실제 값 : ", label)  # 그림의 숫자와 동일
 
         SN = sn.singleLayer(W, Bias)  # singlelayer.py에 있는 singlelayer class를 SN으로 설정
@@ -41,7 +42,7 @@ def TestSN(input_i, x_train, y_train, x_test, y_test, W,
         SN.Optimization(x_train, y_train, x_test, y_test)  # optimize 실행
         y_predict = SN.ScoreFunction(x_train[i])  # y_predict는 optimize실시 후의 scorefunction
         print("학습이 완료되었습니다 \n이미지의 학습 후 추론 값: ", np.argmax(y_predict))  # 트레이닝 후의 추론값 또한 결과값과 다를 수도 있다.(정확도가 87% 정도이기에)
-        img_show(Test)  # 이미지를 보여주는 함수
+        # img_show(Test)  # 이미지를 보여주는 함수
         # 제가 돌릴 때 이 코드를 위쪽에 두고 돌리니까 이미지를 띄우느라 오류가 떠서 아래로 옮겼습니다.
         return SN
 
@@ -56,7 +57,6 @@ x_train, y_train, x_test, y_test = get_data()
 # 3.1
 W = np.random.random((784, 10))  # label의 갯수가 10개이고 이미지당 픽셀수가 784개 이므로 W는 784x10의 벡터값을 가진다
 Bias = np.random.random(10)  # Bias는 각 이미지 label당 하나씩의 값을 가지므로 10개의 값을 가지는 배열
-
 # i = input() # 자신이 원하는 숫자 넣기 가능
 i = 5
 print("train 데이터의 {} 번째의 값 추출".format(i))
@@ -75,8 +75,9 @@ Trainend = TestSN(i, x_train, y_train, x_test, y_test, W, Bias)  # 위의 TestNN
 #          s = int(input())
 #          print("S : {}".format(s))
 #          check = x_train[s]
+#          answer = y_train[s]
 #          # img_show(check)
-#          Hypothesis = TrainNN.Forward(check)
+#          Hypothesis = TrainNN.Forward(check,answer)
 #          print("이 이미지의 추론 값 : {}".format(np.argmax(Hypothesis)))
 #    else:
 #       print("iterator로 숫자를 안넣었습니다. 종료합니다.")

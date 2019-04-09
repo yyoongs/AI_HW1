@@ -35,7 +35,10 @@ class singleLayer:
     def LossFunction(self, y_predict, Y):  # Loss Function을 구하십시오 -> 직접 작성
         # 3.3
         # (Softmax의 결과 값 : y_predict, 정답값 : Y)
-        temp = - np.log(y_predict) * Y
+        epsilon = 1e-7
+        test = np.sum(y_predict * Y, axis=1)
+        print("!@#!@#",test)
+        temp = - np.log(test + epsilon)
         # shape가 (60000,10)인 y_predict를 log를 씌우고, 그 행렬을 (60000,10)의 정답값 레이블 Y와 곱함
         # 결과는 각 이미지당 -log(p(x))*(q(x)) 값을 가지는 60000개의 loss 값
         loss = temp.sum() / temp.shape[0]
