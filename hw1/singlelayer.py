@@ -36,15 +36,23 @@ class singleLayer:
         # 3.3
         # (Softmax의 결과 값 : y_predict, 정답값 : Y)
         epsilon = 1e-7
-        test = np.sum(y_predict * Y, axis=1)
-        print("!@#!@#",test)
-        temp = - np.log(test + epsilon)
-        # shape가 (60000,10)인 y_predict를 log를 씌우고, 그 행렬을 (60000,10)의 정답값 레이블 Y와 곱함
-        # 결과는 각 이미지당 -log(p(x))*(q(x)) 값을 가지는 60000개의 loss 값
-        loss = temp.sum() / temp.shape[0]
+        # y_predict의 차원의 크기가 2일 때
+        if y_predict.ndim == 2:
+            test = np.max(y_predict * Y, axis=1)
+            temp = - np.log(test + epsilon)
+            # shape가 (60000,10)인 y_predict를 log를 씌우고, 그 행렬을 (60000,10)의 정답값 레이블 Y와 곱함
+            # 결과는 각 이미지당 -log(p(x))*(q(x)) 값을 가지는 60000개의 loss 값
+            loss = temp.sum() / temp.shape[0]
+            return loss
         # 60000개의 loss값을 다 더해서 60000으로 나눔
         # 모든 loss의 평균치를 return
-        return loss
+
+        # 차원의 크기가 2가 아닐때 ( 차원의 크기가 1일 때 )
+        test_n = y_predict * Y
+        temp_n = -np.log(test_n + epsilon)
+        loss_n = temp_n.sum() / temp_n.shape
+        # 위와 같은 원리로 loss_n 값 계싼
+        return loss_n
 
     def Forward(self, X, Y):  # ScoreFunction과 Softmax, LossFunction를 적절히 활용해 y_predict 와 loss를 리턴시키는 함수. -> 직접 작성
         # 3.4
