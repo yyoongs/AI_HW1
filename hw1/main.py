@@ -33,7 +33,7 @@ def TestSN(input_i, x_train, y_train, x_test, y_test, W,
         i = int(input_i)  # i에 input_i값을 넣음
         Test = x_train[i]  # x_train의 i번째 이미지를 test에 넣음
         label = np.argmax(y_train[i])  # y_train의 i번째 이미지의 최대값의 위치를 label에 넣음
-        # img_show(Test)  # 이미지를 보여주는 함수
+        img_show(Test)  # 이미지를 보여주는 함수
         print("이 이미지의 실제 값 : ", label)  # 그림의 숫자와 동일
 
         SN = sn.singleLayer(W, Bias)  # singlelayer.py에 있는 singlelayer class를 SN으로 설정
@@ -42,8 +42,6 @@ def TestSN(input_i, x_train, y_train, x_test, y_test, W,
         SN.Optimization(x_train, y_train, x_test, y_test)  # optimize 실행
         y_predict = SN.ScoreFunction(x_train[i])  # y_predict는 optimize실시 후의 scorefunction
         print("학습이 완료되었습니다 \n이미지의 학습 후 추론 값: ", np.argmax(y_predict))  # 트레이닝 후의 추론값 또한 결과값과 다를 수도 있다.(정확도가 87% 정도이기에)
-        # img_show(Test)  # 이미지를 보여주는 함수
-        # 제가 돌릴 때 이 코드를 위쪽에 두고 돌리니까 이미지를 띄우느라 오류가 떠서 아래로 옮겼습니다.
         return SN
 
     else:
