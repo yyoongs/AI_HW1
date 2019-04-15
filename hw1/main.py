@@ -75,7 +75,7 @@ if Trainend !=False:
          check = x_train[s]
          answer = y_train[s]
          img_show(check)
-         Hypothesis , loss = TrainNN.Forward(check,answer)
+         Hypothesis, loss = TrainNN.Forward(check,answer)
          print("이 이미지의 추론 값 : {}".format(np.argmax(Hypothesis)))
    else:
       print("iterator로 숫자를 안넣었습니다. 종료합니다.")
