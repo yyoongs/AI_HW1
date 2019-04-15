@@ -1,6 +1,7 @@
 import numpy as np
 
-
+# 2019-04-15 조용성
+# 최종 제출
 class singleLayer:
     def __init__(self, W, Bias):  # 제공. 호출 시 작동하는 생성자
         self.W = W
